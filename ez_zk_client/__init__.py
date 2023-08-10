@@ -2,6 +2,7 @@ from kazoo.client import KazooClient, KazooState, WatchedEvent, ACL
 from kazoo import security
 from collections import defaultdict
 from functools import partial
+from threading import Thread
 from typing import Callable
 from random import choice
 import time
@@ -407,6 +408,7 @@ def __watch_node_event(node_path, name="default", data=None):
             data = None
         else:
             try:
+                time.sleep(0.2) # prevent kazoo thread queue exception
                 data,status = ZkClient.zk_client_dict[name].get(
                     node_path, partial(__watch_node_event, node_path,name)
                 )
@@ -431,9 +433,15 @@ def __watch_children_event(node_path: str, name="default", data: str = None):
 
     if len(__children_listener[name][node_path]) == 0:
         return    
-    data = ZkClient.zk_client_dict[name].get_children(
-        node_path, partial(__watch_children_event, node_path, name)
-    )
+    try:    
+        time.sleep(0.2)  # prevent kazoo thread queue exception
+        data = ZkClient.zk_client_dict[name].get_children(
+            node_path, partial(__watch_children_event, node_path, name)
+        )
+    except Exception as ex:
+        print(ex)
+        raise ex
+    print(node_path,'get_childen',data)
 
     for cb in __children_listener[name][node_path]:
         try:

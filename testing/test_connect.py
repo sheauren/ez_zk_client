@@ -2,7 +2,7 @@ import os
 import sys
 sys.path.append('../')
 from ez_zk_client import ZkClient,KazooState
-from tests import pytest_hosts
+from testing import pytest_hosts
 #pytest_hosts='172.100.100.200:2181'
 
 def test_connect():

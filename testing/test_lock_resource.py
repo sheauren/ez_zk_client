@@ -1,5 +1,5 @@
 from ez_zk_client import ZkClient, KazooState
-from tests import pytest_hosts
+from testing import pytest_hosts
 import time
 
 client = None
