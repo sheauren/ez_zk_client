@@ -114,6 +114,12 @@ class ZkClient(object):
     def ensure_path(self, node_path: str):
         return ensure_path(node_path, self.name)
 
+    def exists(self,node_path: str):
+        return exists(node_path,self.name)
+    
+    def delete(self,node_path:str):
+        return delete(node_path,self.name)
+
     def create_node(self, node_path: str, data: str = None, watch: Callable = None):
         return create_node(node_path, data, watch, self.name)
 
@@ -317,6 +323,16 @@ def ensure_path(node_path: str, name="default"):
         return ZkClient.zk_client_dict[name].ensure_path(node_path)
     raise Exception(f"{name} zk client not exist, can't ensure path:{node_path}")
 
+
+def exists(node_path,name='default'):
+    if name in ZkClient.zk_client_dict:
+        return ZkClient.zk_client_dict[name].exists(node_path)
+    raise Exception(f"{name} zk client not exist, can't check path exists:{node_path}")
+    
+def delete(node_path,name='default'):
+    if name in ZkClient.zk_client_dict:
+        return ZkClient.zk_client_dict[name].delete(node_path)
+    raise Exception(f"{name} zk client not exist, can't delete path :{node_path}")
 
 def create_node(
     node_path: str, data: str = None, watch: Callable = None, name="default"

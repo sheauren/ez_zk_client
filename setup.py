@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="ez_zk_client",
-    version="0.0.1",
+    version="0.0.2",
     author="Sheauren Wang",
     author_email="sheauren@gmail.com",
     description="Using Kazoo to implement specific features of ZooKeeper, such as: program survival monitoring (alive), global configuration, single-point resource lock, and multi-selection resource lock.",
