@@ -128,7 +128,8 @@ class ZkClient(object):
 
     def get_data(self, node_path: str, watch: Callable = None):
         return get_data(node_path, watch, self.name)
-
+    def get_children(self,node_path,watch:Callable=None,include_data=False):
+        return get_children(node_path,watch,include_data,self.name)
     def alive(self, node_path: str, data: str = None):
         return alive(node_path, data, self.name)
 
@@ -361,6 +362,12 @@ def get_data(node_path: str, watch: Callable = None, name="default"):
         raise Exception(f"{name} zk client not exist, can't get data:{node_path}")
     val, stat = ZkClient.zk_client_dict[name].get(node_path, watch)
     return val.decode("utf-8"), stat
+
+def get_children(node_path,watch:Callable=None,include_data=False,name='default'):
+    if name not in ZkClient.zk_client_dict:
+        raise Exception(f"{name} zk client not exist, can't get children:{node_path}")
+    childrens = ZkClient.zk_client_dict[name].get_children(node_path,watch=watch, include_data=include_data)
+    return childrens
 
 
 def alive(node_path: str, data: str = None, name="default"):

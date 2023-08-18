@@ -1,3 +1,8 @@
+# version change
+# 0.0.3 add get_children mapping kazoo
+# 0.0.2 add ensure_path/exists mapping kazoo
+# 0.0.1 fisrt version
+
 # ez_zk_client install
 ```python
 pip install ez_zk_client
